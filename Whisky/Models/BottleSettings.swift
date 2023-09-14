@@ -205,7 +205,7 @@ class BottleSettings {
                 break
             }
         }
-        
+      
         if dxvkAsync {
             environment.updateValue("1", forKey: "DXVK_ASYNC")
         }

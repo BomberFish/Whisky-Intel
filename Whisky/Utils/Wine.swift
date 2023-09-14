@@ -71,7 +71,7 @@ class Wine {
         try process.run()
         var isRunning = true
         log.write(line: "Launched Wine (\(process.processIdentifier))\n")
-        
+
         #if DEBUG
         log.write(line: "Environment Variables: \(environment ?? [:])")
         #endif

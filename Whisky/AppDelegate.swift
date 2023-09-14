@@ -62,4 +62,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
+    
+    private var aboutBoxWindowController: NSWindowController?
+
+        func showAboutPanel() {
+            if aboutBoxWindowController == nil {
+                let styleMask: NSWindow.StyleMask = [.closable,/* .resizable,*/ .titled]
+                let window = NSWindow()
+                window.styleMask = styleMask
+                window.title = "About"
+                window.titlebarAppearsTransparent = true
+                window.titleVisibility = .hidden
+                window.contentView = NSHostingView(rootView: AboutView())
+                aboutBoxWindowController = NSWindowController(window: window)
+            }
+
+            aboutBoxWindowController?.showWindow(aboutBoxWindowController?.window)
+        }
 }

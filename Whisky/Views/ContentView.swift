@@ -150,7 +150,7 @@ struct BottleListEntry: View {
     @Binding var selected: URL?
 
     var body: some View {
-        Text(bottle.settings.name)
+        Label(bottle.settings.name, systemImage: "wineglass")
             .sheet(isPresented: $showBottleRename) {
                 BottleRenameView(bottle: bottle)
             }

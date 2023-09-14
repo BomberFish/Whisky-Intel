@@ -31,6 +31,14 @@ struct WhiskyApp: App {
         // Don't ask me how this works, it just does
         .handlesExternalEvents(matching: ["{same path of URL?}"])
         .commands {
+            CommandGroup(replacing: .appInfo) {
+                Button(action: {
+                    appDelegate.showAboutPanel()
+                }) {
+                    Text("About Whisky")
+                }
+            }
+
             CommandGroup(after: .appInfo) {
                 SparkleView(updater: updaterController.updater)
                 Divider()
