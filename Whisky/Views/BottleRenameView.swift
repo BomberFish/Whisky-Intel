@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WhiskyKit
 
 struct BottleRenameView: View {
     let bottle: Bottle
@@ -50,11 +51,5 @@ struct BottleRenameView: View {
         .onAppear {
             newBottleName = bottle.settings.name
         }
-    }
-}
-
-struct BottleRenameView_Previews: PreviewProvider {
-    static var previews: some View {
-        BottleRenameView(bottle: Bottle())
     }
 }
