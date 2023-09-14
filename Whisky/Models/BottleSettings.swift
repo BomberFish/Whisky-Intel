@@ -35,6 +35,7 @@ struct BottleMetalConfig: Codable {
 
 struct BottleDXVKConfig: Codable {
     var dxvk: Bool = false
+    var dxvkAsync: Bool = true
     var dxvkHud: DXVKHUD = .off
 }
 
@@ -118,6 +119,14 @@ class BottleSettings {
             settings.dxvkConfig.dxvkHud = newValue
         }
     }
+    
+    var dxvkAsync: Bool {
+        get {
+            return settings.dxvkConfig.dxvkAsync
+        } set {
+            settings.dxvkConfig.dxvkAsync = newValue
+        }
+    }
 
     var name: String {
         get {
@@ -195,6 +204,10 @@ class BottleSettings {
             case .off:
                 break
             }
+        }
+        
+        if dxvkAsync {
+            environment.updateValue("1", forKey: "DXVK_ASYNC")
         }
 
         if esync {
