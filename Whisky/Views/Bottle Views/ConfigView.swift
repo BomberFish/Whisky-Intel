@@ -36,7 +36,7 @@ struct ConfigView: View {
     var body: some View {
         VStack {
             Form {
-                Section {
+                Section("General") {
                     SettingItemView(title: "config.winVersion", loadingState: $winVersionLoadingState) {
                         Picker("config.winVersion", selection: $windowsVersion) {
                             ForEach(WinVersion.allCases.reversed(), id: \.self) {
@@ -108,7 +108,10 @@ struct ConfigView: View {
                         Text("config.dxvkHud.off").tag(DXVKHUD.off)
                     }
                     .disabled(!bottle.settings.dxvk)
-                }, header: {Text("config.title.dxvk")}, footer: {Text("config.dxvk.info")})
+                }, header: {Text("config.title.dxvk")}, footer: {
+                    Label("config.dxvk.info", systemImage: "info.circle")
+                        .foregroundColor(Color(NSColor.secondaryLabelColor))
+                })
                 Section("config.title.metal") {
                     Toggle(isOn: $bottle.settings.metalHud) {
                         Text("config.metalHud")
