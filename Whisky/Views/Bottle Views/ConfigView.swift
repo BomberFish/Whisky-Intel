@@ -93,7 +93,7 @@ struct ConfigView: View {
                         }
                     }
                 }
-                Section("config.title.dxvk") {
+                Section(content: {
                     Toggle(isOn: $bottle.settings.dxvk) {
                         Text("config.dxvk")
                     }
@@ -104,7 +104,7 @@ struct ConfigView: View {
                         Text("config.dxvkHud.off").tag(DXVKHUD.off)
                     }
                     .disabled(!bottle.settings.dxvk)
-                }
+                }, header: {Text("config.title.dxvk")}, footer: {Text("config.dxvk.info")})
                 Section("config.title.metal") {
                     Toggle(isOn: $bottle.settings.metalHud) {
                         Text("config.metalHud")
