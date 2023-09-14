@@ -9,24 +9,7 @@ import Foundation
 import AppKit
 import WhiskyKit
 
-public class Bottle: Hashable, Identifiable {
-    public static func == (lhs: Bottle, rhs: Bottle) -> Bool {
-        return lhs.url == rhs.url
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(url)
-    }
-    public var id: URL {
-        self.url
-    }
-
-    var url: URL = URL.homeDirectory.appending(component: ".wine")
-    var settings: BottleSettings
-    var programs: [Program] = []
-    var startMenuPrograms: [ShellLinkHeader] = []
-    var inFlight: Bool = false
-
+extension Bottle {
     func openCDrive() {
         NSWorkspace.shared.open(url.appending(path: "drive_c"))
     }
@@ -166,44 +149,5 @@ public class Bottle: Hashable, Identifiable {
     @MainActor
     func rename(newName: String) {
         settings.name = newName
-    }
-
-    init(inFlight: Bool = false) {
-        self.settings = BottleSettings(bottleURL: url)
-        self.inFlight = inFlight
-    }
-    init(bottleUrl: URL, inFlight: Bool = false) {
-        self.settings = BottleSettings(bottleURL: bottleUrl)
-        self.url = bottleUrl
-        self.inFlight = inFlight
-    }
-}
-
-extension Array where Element == Bottle {
-    mutating func sortByName() {
-        self.sort { $0.settings.name.lowercased() < $1.settings.name.lowercased() }
-    }
-}
-
-public enum WinVersion: String, CaseIterable, Codable {
-    case winXP = "winxp64"
-    case win7 = "win7"
-    case win8 = "win8"
-    case win81 = "win81"
-    case win10 = "win10"
-
-    func pretty() -> String {
-        switch self {
-        case .winXP:
-            return "Windows XP"
-        case .win7:
-            return "Windows 7"
-        case .win8:
-            return "Windows 8"
-        case .win81:
-            return "Windows 8.1"
-        case .win10:
-            return "Windows 10"
-        }
     }
 }

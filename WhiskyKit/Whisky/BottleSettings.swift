@@ -1,6 +1,6 @@
 //
 //  BottleSettings.swift
-//  Whisky
+//  WhiskyKit
 //
 //  Created by Isaac Marovitz on 31/03/2023.
 //
@@ -8,38 +8,66 @@
 import Foundation
 import SemanticVersion
 
-enum DXVKHUD: Codable {
+public enum DXVKHUD: Codable {
     case full, partial, fps, off
 }
 
-struct Shortcut: Codable {
-    var name: String
-    var link: URL
+public enum WinVersion: String, CaseIterable, Codable {
+    case winXP = "winxp64"
+    case win7 = "win7"
+    case win8 = "win8"
+    case win81 = "win81"
+    case win10 = "win10"
+
+    public func pretty() -> String {
+        switch self {
+        case .winXP:
+            return "Windows XP"
+        case .win7:
+            return "Windows 7"
+        case .win8:
+            return "Windows 8"
+        case .win81:
+            return "Windows 8.1"
+        case .win10:
+            return "Windows 10"
+        }
+    }
 }
 
-struct BottleInfo: Codable {
+public struct Shortcut: Codable {
+    public var name: String
+    public var link: URL
+
+    public init(name: String, link: URL) {
+        self.name = name
+        self.link = link
+    }
+}
+
+public struct BottleInfo: Codable {
     var name: String = "Whisky"
     var shortcuts: [Shortcut] = []
 }
 
-struct BottleWineConfig: Codable {
+public struct BottleWineConfig: Codable {
     var wineVersion: SemanticVersion = SemanticVersion(7, 7, 0)
     var windowsVersion: WinVersion = .win10
     var esync: Bool = false
 }
 
-struct BottleMetalConfig: Codable {
+public struct BottleMetalConfig: Codable {
     var metalHud: Bool = false
     var metalTrace: Bool = false
 }
 
-struct BottleDXVKConfig: Codable {
+public struct BottleDXVKConfig: Codable {
     var dxvk: Bool = false
     var dxvkAsync: Bool = true
     var dxvkHud: DXVKHUD = .off
 }
 
-struct BottleMetadata: Codable {
+public struct BottleMetadata: Codable {
     var fileVersion: SemanticVersion = SemanticVersion(1, 0, 0)
     var info: BottleInfo = .init()
     var wineConfig: BottleWineConfig = .init()
@@ -47,17 +75,17 @@ struct BottleMetadata: Codable {
     var dxvkConfig: BottleDXVKConfig = .init()
 }
 
-class BottleSettings {
+public class BottleSettings {
     private let bottleUrl: URL
     private let metadataUrl: URL
 
-    var settings: BottleMetadata {
+    public var settings: BottleMetadata {
         didSet {
             encode()
         }
     }
 
-    var wineVersion: SemanticVersion {
+    public var wineVersion: SemanticVersion {
         get {
             return settings.wineConfig.wineVersion
         }
@@ -66,7 +94,7 @@ class BottleSettings {
         }
     }
 
-    var windowsVersion: WinVersion {
+    public var windowsVersion: WinVersion {
         get {
             return settings.wineConfig.windowsVersion
         }
@@ -75,7 +103,7 @@ class BottleSettings {
         }
     }
 
-    var esync: Bool {
+    public var esync: Bool {
         get {
             return settings.wineConfig.esync
         }
@@ -84,7 +112,7 @@ class BottleSettings {
         }
     }
 
-    var metalHud: Bool {
+    public var metalHud: Bool {
         get {
             return settings.metalConfig.metalHud
         }
@@ -93,7 +121,7 @@ class BottleSettings {
         }
     }
 
-    var metalTrace: Bool {
+    public var metalTrace: Bool {
         get {
             return settings.metalConfig.metalTrace
         }
@@ -102,7 +130,7 @@ class BottleSettings {
         }
     }
 
-    var dxvk: Bool {
+    public var dxvk: Bool {
         get {
             return settings.dxvkConfig.dxvk
         }
@@ -111,7 +139,7 @@ class BottleSettings {
         }
     }
 
-    var dxvkHud: DXVKHUD {
+    public var dxvkHud: DXVKHUD {
         get {
             return settings.dxvkConfig.dxvkHud
         }
@@ -128,7 +156,7 @@ class BottleSettings {
         }
     }
 
-    var name: String {
+    public var name: String {
         get {
             return settings.info.name
         } set {
@@ -136,7 +164,7 @@ class BottleSettings {
         }
     }
 
-    var shortcuts: [Shortcut] {
+    public var shortcuts: [Shortcut] {
         get {
             return settings.info.shortcuts
         }
@@ -145,7 +173,7 @@ class BottleSettings {
         }
     }
 
-    init(bottleURL: URL) {
+    public init(bottleURL: URL) {
         bottleUrl = bottleURL
         metadataUrl = bottleURL
             .appending(path: "Metadata")
@@ -157,7 +185,7 @@ class BottleSettings {
     }
 
     @discardableResult
-    public func decode() -> Bool {
+    private func decode() -> Bool {
         let decoder = PropertyListDecoder()
 
         do {
@@ -170,6 +198,7 @@ class BottleSettings {
             if settings.wineConfig.wineVersion != BottleWineConfig().wineVersion {
                 print("Bottle has a different wine version!")
                 settings.wineConfig.wineVersion = BottleWineConfig().wineVersion
+                encode()
             }
             return true
         } catch {
@@ -178,7 +207,7 @@ class BottleSettings {
     }
 
     @discardableResult
-    public func encode() -> Bool {
+    private func encode() -> Bool {
         let encoder = PropertyListEncoder()
         encoder.outputFormat = .xml
 
@@ -191,7 +220,7 @@ class BottleSettings {
         }
     }
 
-    func environmentVariables(environment: inout [String: String]) {
+    public func environmentVariables(environment: inout [String: String]) {
         if dxvk {
             environment.updateValue("dxgi,d3d9,d3d10core,d3d11=n,b", forKey: "WINEDLLOVERRIDES")
             switch dxvkHud {

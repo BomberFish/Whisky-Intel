@@ -12,15 +12,7 @@ import WhiskyKit
 class BottleVM: ObservableObject {
     static let shared = BottleVM()
 
-    static let containerDir = FileManager.default.homeDirectoryForCurrentUser
-        .appending(path: "Library")
-        .appending(path: "Containers")
-        .appending(path: Bundle.main.bundleIdentifier ?? "com.isaacmarovitz.Whisky")
-
-    static let bottleDir = containerDir
-        .appending(path: "Bottles")
-    let bottlesList = BottleVMEntries()
-
+    var bottlesList = BottleData()
     @Published var bottles: [Bottle] = []
 
     @MainActor
@@ -31,20 +23,6 @@ class BottleVM: ObservableObject {
             bottlesList.paths.remove(at: index)
         }
 
-        // Update if needed
-        if !BottleVMEntries.exists() {
-            do {
-                let files = try FileManager.default.contentsOfDirectory(at: BottleVM.bottleDir,
-                                                                    includingPropertiesForKeys: nil,
-                                                                    options: .skipsHiddenFiles)
-                for file in files where loadBottle(bottleURL: file) != nil {
-                    bottlesList.paths.append(file)
-                }
-            } catch {
-                print("Failed to list files")
-            }
-            bottlesList.encode()
-        }
         bottles = bottlesList.paths.map({
             Bottle(bottleUrl: $0)
         })
@@ -52,30 +30,13 @@ class BottleVM: ObservableObject {
     }
 
     func loadBottle(bottleURL: URL) -> BottleSettings? {
-        // Try loading as legacy bottle
-        do {
-            let files = try FileManager.default.contentsOfDirectory(at: bottleURL, includingPropertiesForKeys: nil)
-            for file in files where file.pathExtension == "plist" {
-                if let bottlePath = convertFormat(plistPath: file) {
-                    return BottleSettings(bottleURL: bottlePath)
-                } else {
-                    print("Failed to load as legacy bottle")
-                }
-            }
-        } catch {
-            print("Failed to load as legacy bottle")
-        }
-
-        // Try loading as a normal bottle
         let bottleMetadata = bottleURL
             .appending(path: "Metadata")
             .appendingPathExtension("plist")
             .path(percentEncoded: false)
 
         if FileManager.default.fileExists(atPath: bottleMetadata) {
-            let bottle = BottleSettings(bottleURL: bottleURL)
-            bottle.encode()
-            return bottle
+            return BottleSettings(bottleURL: bottleURL)
         }
 
         return .none
@@ -87,12 +48,6 @@ class BottleVM: ObservableObject {
         Task.detached { @MainActor in
             var bottleId: Bottle? = .none
             do {
-                let bottleDirPath = BottleVM.bottleDir.path(percentEncoded: false)
-                if !FileManager.default.fileExists(atPath: bottleDirPath) {
-                    try FileManager.default.createDirectory(atPath: bottleDirPath,
-                                                            withIntermediateDirectories: true)
-                }
-
                 try FileManager.default.createDirectory(atPath: newBottleDir.path(percentEncoded: false),
                                                         withIntermediateDirectories: true)
                 let bottle = Bottle(bottleUrl: newBottleDir, inFlight: true)

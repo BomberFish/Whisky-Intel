@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WhiskyKit
 
 enum LoadingState {
     case loading
@@ -332,11 +333,5 @@ struct SettingItemView<V: View>: View {
                 }
             }
         }
-    }
-}
-
-struct ConfigView_Previews: PreviewProvider {
-    static var previews: some View {
-        ConfigView(bottle: .constant(Bottle()))
     }
 }
