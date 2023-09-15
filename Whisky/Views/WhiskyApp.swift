@@ -45,13 +45,11 @@ struct WhiskyApp: App {
                 Button("open.setup") {
                     showSetup = true
                 }
-                /*
                 Button("install.cli") {
                     Task {
                         await WhiskyCmd.install()
                     }
                 }
-                */
             }
             CommandGroup(replacing: .newItem) {}
             CommandGroup(after: .newItem) {

@@ -139,6 +139,14 @@ public class BottleSettings {
         }
     }
 
+    var dxvkAsync: Bool {
+        get {
+            return settings.dxvkConfig.dxvkAsync
+        } set {
+            settings.dxvkConfig.dxvkAsync = newValue
+        }
+    }
+
     public var dxvkHud: DXVKHUD {
         get {
             return settings.dxvkConfig.dxvkHud
@@ -235,6 +243,10 @@ public class BottleSettings {
             }
         }
       
+        if dxvkAsync {
+            environment.updateValue("1", forKey: "DXVK_ASYNC")
+        }
+
         if dxvkAsync {
             environment.updateValue("1", forKey: "DXVK_ASYNC")
         }

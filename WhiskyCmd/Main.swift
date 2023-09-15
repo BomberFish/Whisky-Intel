@@ -8,6 +8,8 @@
 import Foundation
 import ArgumentParser
 import WhiskyKit
+import SwiftyTextTable
+import Progress
 
 @main
 struct Whisky: ParsableCommand {
@@ -28,23 +30,29 @@ extension Whisky {
         static var configuration = CommandConfiguration(abstract: "List existing bottles.")
 
         mutating func run() throws {
-            let bottlesList = BottleData()
-            var bottles: [BottleSettings] = []
+            var bottlesList = BottleData()
+            let bottles = bottlesList.loadBottles()
 
-            bottles = bottlesList.paths.map({
-                BottleSettings(bottleURL: $0)
-            })
+            let nameCol = TextTableColumn(header: "Name")
+            let winVerCol = TextTableColumn(header: "Windows Version")
+            let pathCol = TextTableColumn(header: "Path")
 
-            // Columns should be even and automatic
-            print("| Name | Windows Version |")
+            var table = TextTable(columns: [nameCol, winVerCol, pathCol])
             for bottle in bottles {
-                print("| \(bottle.name) | \(bottle.windowsVersion.pretty()) |")
+                table.addRow(values: [bottle.settings.name,
+                                      bottle.settings.windowsVersion.pretty(),
+                                      bottle.url.prettyPath()])
             }
+
+            print(table.render())
         }
     }
 
     struct Create: ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Create a new bottle.")
+
+        @Argument var name: String
+        @Argument var path: String?
 
         mutating func run() throws {
             print("Create a bottle")
@@ -77,8 +85,25 @@ extension Whisky {
     struct Delete: ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Delete a an existing bottle from disk.")
 
+        @Argument var name: String
+
         mutating func run() throws {
-            print("Delete a bottle")
+            var bottlesList = BottleData()
+            let bottles = bottlesList.loadBottles()
+
+            // Should ask for confirmation
+            let bottleToRemove = bottles.first(where: { $0.settings.name == name })
+            if let bottleToRemove = bottleToRemove {
+                bottlesList.paths.removeAll(where: { $0 == bottleToRemove.url })
+                do {
+                    try FileManager.default.removeItem(at: bottleToRemove.url)
+                    print("Deleted \"\(name)\".")
+                } catch {
+                    print(error)
+                }
+            } else {
+                print("No bottle called \"\(name)\" found.")
+            }
         }
     }
 
@@ -89,16 +114,13 @@ extension Whisky {
         @Argument var name: String
 
         mutating func run() throws {
-            let bottlesList = BottleData()
-            var bottles: [BottleSettings] = []
+            var bottlesList = BottleData()
+            let bottles = bottlesList.loadBottles()
 
-            bottles = bottlesList.paths.map({
-                BottleSettings(bottleURL: $0)
-            })
-
-            let bottleToRemove = bottles.first(where: { $0.name == name })
+            let bottleToRemove = bottles.first(where: { $0.settings.name == name })
             if let bottleToRemove = bottleToRemove {
-                // bottlesList.paths.remove(at: 0)
+                bottlesList.paths.removeAll(where: { $0 == bottleToRemove.url })
+                print("Removed \"\(name)\".")
             } else {
                 print("No bottle called \"\(name)\" found.")
             }
@@ -108,10 +130,32 @@ extension Whisky {
     struct Install: ParsableCommand {
         static var configuration = CommandConfiguration(abstract: "Install Whisky dependencies.")
 
-        @Flag(name: [.long, .short], help: "Download & Install Wine") var wine = false
+        @Flag(name: [.long, .short], help: "Download & Install GPTK") var gptk = false
 
         mutating func run() throws {
-            print("Install deps")
+            if gptk {
+                let semaphore = DispatchSemaphore(value: 0)
+
+                Task {
+                    if let info = await GPTKDownloader.getLatestGPTKURL(),
+                       let url = info.directURL {
+                        print("Downloading GPTK from \(url)")
+                        var progress = ProgressBar(count: info.totalByteCount)
+                        let downloadTask = URLSession.shared.downloadTask(with: url) { url, _, _ in
+                            if let url = url {
+                                // tarLocation = url
+                            }
+                            semaphore.signal()
+                        }
+                        var observation = downloadTask.observe(\.countOfBytesReceived) { task, _ in
+                            progress.setValue(Int(task.countOfBytesReceived))
+                        }
+                        downloadTask.resume()
+                    }
+                }
+
+                semaphore.wait()
+            }
         }
     }
 
@@ -119,10 +163,13 @@ extension Whisky {
         static var configuration = CommandConfiguration(abstract: "Uninstall Whisky dependencies.",
                                                         discussion: "Uninstalling Wine implicitly uninstalls GPTK.")
 
-        @Flag(name: [.long, .short], help: "Uninstall Wine") var wine = false
+        @Flag(name: [.long, .short], help: "Uninstall GPTK") var gptk = false
 
         mutating func run() throws {
-            print("Uninstall deps")
+            if gptk {
+                GPTKInstaller.uninstall()
+                print("GPTK uninstalled.")
+            }
         }
     }
 }

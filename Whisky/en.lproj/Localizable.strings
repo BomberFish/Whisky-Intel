@@ -9,7 +9,7 @@
 "main.noneSelected" = "Select a bottle";
 "main.createFirst" = "Create your first bottle to get started";
 
-"button.cDrive" = "Open C Drive";
+"button.cDrive" = "Open C: Drive";
 "button.showInFinder" = "Show in Finder";
 "button.createShortcut" = "Create Shortcut";
 "button.run" = "Run...";
@@ -44,7 +44,7 @@
 "config.dxvkHud.partial" = "Partial";
 "config.dxvkHud.fps" = "FPS";
 "config.dxvkHud.off" = "Off";
-"config.dxvk.async" = "DXVK ASync";
+"config.dxvk.async" = "DXVK Async";
 "config.dxvk.info" = "Enable this if you encounter the \"Unsupported Environment\" error.";
 "config.dpi" = "DPI Scaling";
 "config.inspect" = "Configure...";
