@@ -155,14 +155,6 @@ public class BottleSettings {
             settings.dxvkConfig.dxvkHud = newValue
         }
     }
-    
-    var dxvkAsync: Bool {
-        get {
-            return settings.dxvkConfig.dxvkAsync
-        } set {
-            settings.dxvkConfig.dxvkAsync = newValue
-        }
-    }
 
     public var name: String {
         get {
