@@ -14,38 +14,35 @@ struct ProgramsView: View {
     // We don't actually care about the value
     // This just provides a way to trigger a refresh
     @State var resortPrograms: Bool = false
+    @State var isExpanded: Bool = true
     @Binding var reloadStartMenu: Bool
+    @Binding var path: NavigationPath
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section("program.title") {
-                    List($programs, id: \.self) { $program in
-                        NavigationLink {
-                            ProgramView(program: $program)
-                        } label: {
-                            ProgramItemView(program: program, resortPrograms: $resortPrograms)
-                        }
-                    }
+        Form {
+            Section("program.title", isExpanded: $isExpanded) {
+                List($programs, id: \.self) { $program in
+                    ProgramItemView(program: program,
+                                    resortPrograms: $resortPrograms,
+                                    path: $path)
                 }
             }
-            .formStyle(.grouped)
-            .navigationTitle(String(format: String(localized: "tab.navTitle.programs"),
-                                    bottle.settings.name))
-            .onAppear {
-                programs = bottle.updateInstalledPrograms()
-                sortPrograms()
-            }
-            .onChange(of: resortPrograms) {
-                reloadStartMenu.toggle()
-                sortPrograms()
-            }
+        }
+        .formStyle(.grouped)
+        .navigationTitle("tab.programs")
+        .onAppear {
+            programs = bottle.updateInstalledPrograms()
+            sortPrograms()
+        }
+        .onChange(of: resortPrograms) {
+            reloadStartMenu.toggle()
+            sortPrograms()
         }
     }
 
     func sortPrograms() {
-        var favourites = programs.filter { $0.favourited }
-        var nonFavourites = programs.filter { !$0.favourited }
+        var favourites = programs.filter { $0.pinned }
+        var nonFavourites = programs.filter { !$0.pinned }
         favourites = favourites.sorted { $0.name < $1.name }
         nonFavourites = nonFavourites.sorted { $0.name < $1.name }
         programs.removeAll()
@@ -57,40 +54,45 @@ struct ProgramsView: View {
 struct ProgramItemView: View {
     let program: Program
     @State var showButtons: Bool = false
-    @State var isFavourited: Bool = false
+    @State var isPinned: Bool = false
+    @State var pinHovered: Bool = false
     @Binding var resortPrograms: Bool
+    @Binding var path: NavigationPath
 
     var body: some View {
         HStack {
             Button {
-                isFavourited = program.toggleFavourited()
+                isPinned = program.togglePinned()
                 resortPrograms.toggle()
             } label: {
-                Image(systemName: isFavourited ? "star.fill" : "star")
+                Image(systemName: isPinned ? pinHovered ? "pin.slash.fill" : "pin.fill" : "pin")
+                    .onHover { hover in
+                        pinHovered = hover
+                    }
             }
             .buttonStyle(.plain)
-            .foregroundColor(isFavourited ? .yellow : .primary)
-            .opacity(isFavourited ? 1 : showButtons ? 1 : 0)
+            .foregroundColor(isPinned ? .accentColor : .secondary)
+            .opacity(isPinned ? 1 : showButtons ? 1 : 0)
             Text(program.name)
             Spacer()
             if showButtons {
+                if let peFile = program.peFile,
+                   let archString = peFile.architecture.toString() {
+                    Text(archString)
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 5)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(.secondary)
+                        )
+                }
                 Button {
-                    Task(priority: .userInitiated) {
-                        do {
-                            try await Wine.runProgram(program: program)
-                        } catch {
-                            let alert = NSAlert()
-                            alert.messageText = String(localized: "alert.message")
-                            alert.informativeText = String(localized: "alert.info") + " \(program.name)"
-                            alert.alertStyle = .critical
-                            alert.addButton(withTitle: String(localized: "button.ok"))
-                            alert.runModal()
-                        }
-                    }
+                    path.append(program)
                 } label: {
-                    Image(systemName: "play.circle.fill")
+                    Image(systemName: "gearshape")
                 }
                 .buttonStyle(.plain)
+                .foregroundStyle(.secondary)
             }
         }
         .padding(4)
@@ -98,7 +100,7 @@ struct ProgramItemView: View {
             showButtons = hover
         }
         .onAppear {
-            isFavourited = program.favourited
+            isPinned = program.pinned
         }
     }
 }

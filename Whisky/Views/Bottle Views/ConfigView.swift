@@ -27,6 +27,9 @@ struct ConfigView: View {
     @State var retinaModeLoadingState: LoadingState = .loading
     @State var dpiConfigLoadingState: LoadingState = .loading
     @State var dpiSheetPresented: Bool = false
+    @AppStorage("wineSectionExpanded") var wineSectionExpanded: Bool = true
+    @AppStorage("dxvkSectionExpanded") var dxvkSectionExpanded: Bool = true
+    @AppStorage("metalSectionExpanded") var metalSectionExpanded: Bool = true
 
     init(bottle: Binding<Bottle>) {
         self._bottle = bottle
@@ -36,7 +39,7 @@ struct ConfigView: View {
     var body: some View {
         VStack {
             Form {
-                Section("General") {
+                Section("config.title.wine", isExpanded: $wineSectionExpanded) {
                     SettingItemView(title: "config.winVersion", loadingState: $winVersionLoadingState) {
                         Picker("config.winVersion", selection: $windowsVersion) {
                             ForEach(WinVersion.allCases.reversed(), id: \.self) {
@@ -77,6 +80,9 @@ struct ConfigView: View {
                             }
                         }
                     }
+                    Toggle(isOn: $bottle.settings.esync) {
+                        Text("config.esync")
+                    }
                     SettingItemView(title: "config.dpi", loadingState: $dpiConfigLoadingState) {
                         HStack {
                             Text("config.dpi")
@@ -112,7 +118,7 @@ struct ConfigView: View {
                 }, header: {Text("config.title.dxvk")}, footer: {
                     Label("config.dxvk.info", systemImage: "info.circle")
                         .foregroundColor(Color(NSColor.secondaryLabelColor))
-                })
+                }, isExpanded: $dxvkSectionExpanded)
                 Section("config.title.metal") {
                     Toggle(isOn: $bottle.settings.metalHud) {
                         Text("config.metalHud")
@@ -120,11 +126,6 @@ struct ConfigView: View {
                     Toggle(isOn: $bottle.settings.metalTrace) {
                         Text("config.metalTrace")
                         Text("config.metalTrace.info")
-                    }
-                }
-                Section {
-                    Toggle(isOn: $bottle.settings.esync) {
-                        Text("config.esync")
                     }
                 }
             }
@@ -161,8 +162,7 @@ struct ConfigView: View {
             }
             .padding()
         }
-        .navigationTitle(String(format: String(localized: "tab.navTitle.config"),
-                                bottle.settings.name))
+        .navigationTitle("tab.config")
         .onAppear {
             windowsVersion = bottle.settings.windowsVersion
             winVersionLoadingState = .success

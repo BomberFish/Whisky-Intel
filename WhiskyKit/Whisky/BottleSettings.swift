@@ -35,19 +35,19 @@ public enum WinVersion: String, CaseIterable, Codable {
     }
 }
 
-public struct Shortcut: Codable, Hashable {
+public struct PinnedProgram: Codable, Hashable {
     public var name: String
-    public var link: URL
+    public var url: URL
 
-    public init(name: String, link: URL) {
+    public init(name: String, url: URL) {
         self.name = name
-        self.link = link
+        self.url = url
     }
 }
 
 public struct BottleInfo: Codable {
     var name: String = "Whisky"
-    var shortcuts: [Shortcut] = []
+    var pins: [PinnedProgram] = []
 }
 
 public struct BottleWineConfig: Codable {
@@ -164,12 +164,12 @@ public class BottleSettings {
         }
     }
 
-    public var shortcuts: [Shortcut] {
+    public var pins: [PinnedProgram] {
         get {
-            return settings.info.shortcuts
+            return settings.info.pins
         }
         set {
-            settings.info.shortcuts = newValue
+            settings.info.pins = newValue
         }
     }
 
@@ -220,16 +220,16 @@ public class BottleSettings {
         }
     }
 
-    public func environmentVariables(environment: inout [String: String]) {
+    public func environmentVariables(wineEnv: inout [String: String]) {
         if dxvk {
-            environment.updateValue("dxgi,d3d9,d3d10core,d3d11=n,b", forKey: "WINEDLLOVERRIDES")
+            wineEnv.updateValue("dxgi,d3d9,d3d10core,d3d11=n,b", forKey: "WINEDLLOVERRIDES")
             switch dxvkHud {
             case .full:
-                environment.updateValue("full", forKey: "DXVK_HUD")
+                wineEnv.updateValue("full", forKey: "DXVK_HUD")
             case .partial:
-                environment.updateValue("devinfo,fps,frametimes", forKey: "DXVK_HUD")
+                wineEnv.updateValue("devinfo,fps,frametimes", forKey: "DXVK_HUD")
             case .fps:
-                environment.updateValue("fps", forKey: "DXVK_HUD")
+                wineEnv.updateValue("fps", forKey: "DXVK_HUD")
             case .off:
                 break
             }
@@ -240,19 +240,19 @@ public class BottleSettings {
         }
 
         if dxvkAsync {
-            environment.updateValue("1", forKey: "DXVK_ASYNC")
+            wineEnv.updateValue("1", forKey: "DXVK_ASYNC")
         }
 
         if esync {
-            environment.updateValue("1", forKey: "WINEESYNC")
+            wineEnv.updateValue("1", forKey: "WINEESYNC")
         }
 
         if metalHud {
-            environment.updateValue("1", forKey: "MTL_HUD_ENABLED")
+            wineEnv.updateValue("1", forKey: "MTL_HUD_ENABLED")
         }
 
         if metalTrace {
-            environment.updateValue("1", forKey: "METAL_CAPTURE_ENABLED")
+            wineEnv.updateValue("1", forKey: "METAL_CAPTURE_ENABLED")
         }
     }
 }

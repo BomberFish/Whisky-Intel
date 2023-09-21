@@ -40,7 +40,7 @@ extension Program {
         var wineCmd = "\(Wine.wineBinary.esc) start /unix \(url.esc) \(settings.arguments)"
 
         let env = Wine.constructEnvironment(bottle: bottle,
-                                            environment: settings.environment)
+                                            programEnv: settings.environment)
         for environment in env {
             wineCmd = "\(environment.key)=\(environment.value) " + wineCmd
         }
@@ -80,15 +80,17 @@ extension Program {
         }
     }
 
-    func toggleFavourited() -> Bool {
-        if favourited {
-            bottle.settings.shortcuts.removeAll(where: { $0.link == url })
-            favourited = false
+    func togglePinned() -> Bool {
+        if pinned {
+            bottle.settings.pins.removeAll(where: { $0.url == url })
+            pinned = false
         } else {
-            bottle.settings.shortcuts.append(Shortcut(name: name, link: url))
-            favourited = true
+            bottle.settings.pins.append(PinnedProgram(name: name
+                                                            .replacingOccurrences(of: ".exe", with: ""),
+                                                      url: url))
+            pinned = true
         }
 
-        return favourited
+        return pinned
     }
 }
