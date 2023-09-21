@@ -236,7 +236,7 @@ public class BottleSettings {
         }
       
         if dxvkAsync {
-            environment.updateValue("1", forKey: "DXVK_ASYNC")
+            wineEnv.updateValue("1", forKey: "DXVK_ASYNC")
         }
 
         if dxvkAsync {
