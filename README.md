@@ -42,10 +42,8 @@ Whisky is on homebrew! Install with
 
 # FAQ
 
-### Do I need to follow the steps in the toolkit's README?
-
-No, you don't, in fact you shouldn't follow them.
-
 ### My game isn't working
 
 Check the [wiki](https://github.com/IsaacMarovitz/Whisky/wiki/Game-Support).
+
+*Whisky doesn't exist without CrossOver. This project is not meant to out-compete it or surpass it in any way. Please continue to support the fantastic work of CodeWeavers.*

@@ -7,13 +7,19 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
-import QuickLookThumbnailing
 import WhiskyKit
+
+enum BottleStage {
+    case config
+    case programs
+    case info
+}
 
 struct BottleView: View {
     @Binding var bottle: Bottle
+    @State private var path = NavigationPath()
     @State var programLoading: Bool = false
-    @State var shortcuts: [Shortcut] = []
+    @State var pins: [PinnedProgram] = []
     // We don't actually care about the value
     // This just provides a way to trigger a refresh
     @State var loadStartMenu: Bool = false
@@ -22,29 +28,21 @@ struct BottleView: View {
     private let gridLayout = [GridItem(.adaptive(minimum: 100, maximum: .infinity))]
 
     var body: some View {
-        VStack {
-            ScrollView {
-                if shortcuts.count > 0 {
-                    NavigationStack {
+        NavigationStack(path: $path) {
+            VStack {
+                ScrollView {
+                    if pins.count > 0 {
                         LazyVGrid(columns: gridLayout, alignment: .center) {
-                            ForEach(shortcuts, id: \.link) { shortcut in
-                                NavigationLink {
-                                    let program = Program(name: shortcut.name,
-                                                          url: shortcut.link,
-                                                          bottle: bottle)
-                                    ProgramView(program: .constant(program))
-                                } label: {
-                                    ShortcutView(bottle: bottle,
-                                                 shortcut: shortcut,
-                                                 loadStartMenu: $loadStartMenu)
-                                }
-                                .buttonStyle(.plain)
+                            ForEach(pins, id: \.url) { pin in
+                                PinnedProgramView(bottle: bottle,
+                                                  pin: pin,
+                                                  loadStartMenu: $loadStartMenu)
                                 .overlay {
                                     HStack {
                                         Spacer()
                                         Button {
-                                            let program = Program(name: shortcut.name,
-                                                                  url: shortcut.link,
+                                            let program = Program(name: pin.name,
+                                                                  url: pin.url,
                                                                   bottle: bottle)
                                             Task {
                                                 await program.run()
@@ -57,30 +55,15 @@ struct BottleView: View {
                                         }
                                         .buttonStyle(.plain)
                                     }
-                                    .frame(width: 45, height: 45) // Same size as ShellLinkView's icon
+                                    .frame(width: 45, height: 45)
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 0))
                                 }
                             }
                         }
                         .padding()
                     }
-                }
-                NavigationStack {
                     Form {
-                        NavigationLink {
-                            ConfigView(bottle: $bottle)
-                        } label: {
-                            HStack {
-                                Image(systemName: "gearshape")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 14, height: 14, alignment: .center)
-                                Text("tab.config")
-                            }
-                        }
-                        NavigationLink {
-                            ProgramsView(bottle: bottle, reloadStartMenu: $loadStartMenu)
-                        } label: {
+                        NavigationLink(value: BottleStage.programs) {
                             HStack {
                                 Image(systemName: "list.bullet")
                                     .resizable()
@@ -89,9 +72,16 @@ struct BottleView: View {
                                 Text("tab.programs")
                             }
                         }
-                        NavigationLink {
-                            InfoView(bottle: bottle)
-                        } label: {
+                        NavigationLink(value: BottleStage.config) {
+                            HStack {
+                                Image(systemName: "gearshape")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 14, height: 14, alignment: .center)
+                                Text("tab.config")
+                            }
+                        }
+                        NavigationLink(value: BottleStage.info) {
                             HStack {
                                 Image(systemName: "info.circle")
                                     .resizable()
@@ -109,82 +99,103 @@ struct BottleView: View {
                         updateStartMenu()
                     }
                 }
-            }
-            Spacer()
-            HStack {
                 Spacer()
-                Button("button.winetricks") {
-                    showWinetricksSheet.toggle()
-                }
-                Button("button.cDrive") {
-                    bottle.openCDrive()
-                }
-                Button("button.run") {
-                    let panel = NSOpenPanel()
-                    panel.allowsMultipleSelection = false
-                    panel.canChooseDirectories = false
-                    panel.canChooseFiles = true
-                    panel.allowedContentTypes = [UTType.exe,
-                                                 UTType(exportedAs: "com.microsoft.msi-installer"),
-                                                 UTType(exportedAs: "com.microsoft.bat")]
-                    panel.directoryURL = bottle.url.appending(path: "drive_c")
-                    panel.begin { result in
-                        programLoading = true
-                        Task(priority: .userInitiated) {
-                            if result == .OK {
-                                if let url = panel.urls.first {
-                                    do {
-                                        if url.pathExtension == "bat" {
-                                            try await Wine.runBatchFile(url: url, bottle: bottle)
-                                        } else {
-                                            try await Wine.runExternalProgram(url: url, bottle: bottle)
+                HStack {
+                    Spacer()
+                    Button("button.winetricks") {
+                        showWinetricksSheet.toggle()
+                    }
+                    Button("button.cDrive") {
+                        bottle.openCDrive()
+                    }
+                    Button("button.run") {
+                        let panel = NSOpenPanel()
+                        panel.allowsMultipleSelection = false
+                        panel.canChooseDirectories = false
+                        panel.canChooseFiles = true
+                        panel.allowedContentTypes = [UTType.exe,
+                                                     UTType(exportedAs: "com.microsoft.msi-installer"),
+                                                     UTType(exportedAs: "com.microsoft.bat")]
+                        panel.directoryURL = bottle.url.appending(path: "drive_c")
+                        panel.begin { result in
+                            programLoading = true
+                            Task(priority: .userInitiated) {
+                                if result == .OK {
+                                    if let url = panel.urls.first {
+                                        do {
+                                            if url.pathExtension == "bat" {
+                                                try await Wine.runBatchFile(url: url, bottle: bottle)
+                                            } else {
+                                                try await Wine.runExternalProgram(url: url, bottle: bottle)
+                                            }
+                                        } catch {
+                                            print("Failed to run external program: \(error)")
                                         }
-                                    } catch {
-                                        print("Failed to run external program: \(error)")
+                                        programLoading = false
                                     }
+                                } else {
                                     programLoading = false
                                 }
-                            } else {
-                                programLoading = false
+                                updateStartMenu()
                             }
-                            updateStartMenu()
                         }
                     }
+                    .disabled(programLoading)
+                    if programLoading {
+                        Spacer()
+                            .frame(width: 10)
+                        ProgressView()
+                            .controlSize(.small)
+                    }
                 }
-                .disabled(programLoading)
-                if programLoading {
-                    Spacer()
-                        .frame(width: 10)
-                    ProgressView()
-                        .controlSize(.small)
+                .padding()
+            }
+            .navigationTitle(bottle.settings.name)
+            .sheet(isPresented: $showWinetricksSheet) {
+                WinetricksView(bottle: bottle)
+            }
+            .navigationDestination(for: BottleStage.self) { stage in
+                switch stage {
+                case .config:
+                    ConfigView(bottle: $bottle)
+                case .programs:
+                    ProgramsView(bottle: bottle,
+                                 reloadStartMenu: $loadStartMenu,
+                                 path: $path)
+                case .info:
+                    InfoView(bottle: bottle)
                 }
             }
-            .padding()
-        }
-        .navigationTitle(bottle.settings.name)
-        .sheet(isPresented: $showWinetricksSheet) {
-            WinetricksView(bottle: bottle)
+            .navigationDestination(for: Program.self) { program in
+                ProgramView(program: Binding(get: {
+                    // swiftlint:disable:next force_unwrapping
+                    bottle.programs[bottle.programs.firstIndex(of: program)!]
+                }, set: { newValue in
+                    if let index = bottle.programs.firstIndex(of: program) {
+                        bottle.programs[index] = newValue
+                    }
+                }))
+            }
         }
     }
 
     func updateStartMenu() {
-        shortcuts = bottle.settings.shortcuts
-
-        let links = bottle.getStartMenuPrograms()
-        for link in links {
-            if let linkInfo = link.linkInfo, let program = linkInfo.program {
-                shortcuts.append(Shortcut(name: program.name,
-                                          link: program.url))
+        bottle.programs = bottle.updateInstalledPrograms()
+        let startMenuPrograms = bottle.getStartMenuPrograms()
+        for startMenuProgram in startMenuPrograms {
+            for program in bottle.programs where
+            // For some godforsaken reason "foo/bar" != "foo/Bar" so...
+            program.url.path().caseInsensitiveCompare(startMenuProgram.url.path()) == .orderedSame {
+                program.pinned = true
+                if !bottle.settings.pins.contains(where: { $0.url == program.url }) {
+                    bottle.settings.pins.append(PinnedProgram(name: program.name
+                                                                    .replacingOccurrences(of: ".exe", with: ""),
+                                                              url: program.url))
+                }
             }
         }
-        shortcuts = shortcuts.uniqued()
-    }
-}
 
-public extension Array where Element: Hashable {
-    func uniqued() -> [Element] {
-        var seen = Set<Element>()
-        return filter { seen.insert($0).inserted }
+        pins = bottle.settings.pins
     }
 }
 
@@ -226,64 +237,12 @@ struct WinetricksView: View {
     }
 }
 
-struct ShellLinkView: View {
-    @State var link: ShellLinkHeader
-    @State var image: NSImage?
-    @Binding var loadStartMenu: Bool
-
-    var body: some View {
-        VStack {
-            if let stringData = link.stringData, let icon = stringData.icon {
-                Image(nsImage: icon)
-                    .resizable()
-                    .frame(width: 45, height: 45)
-            } else {
-                if let image = image {
-                    Image(nsImage: image)
-                        .resizable()
-                        .frame(width: 45, height: 45)
-                } else {
-                    Image(systemName: "app.dashed")
-                        .resizable()
-                        .frame(width: 45, height: 45)
-                }
-            }
-            Spacer()
-            Text(link.url
-                .deletingPathExtension()
-                .lastPathComponent + "\n")
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-        }
-        .frame(width: 90, height: 90)
-        .padding(10)
-        .contextMenu {
-            Button("Delete Shortcut") {
-                do {
-                    try FileManager.default.removeItem(at: link.url)
-                    loadStartMenu.toggle()
-                } catch {
-                    print("Failed to delete shortcut: \(error)")
-                }
-            }
-        }
-        .onAppear {
-            if let linkInfo = link.linkInfo, let program = linkInfo.program {
-                do {
-                    let peFile = try PEFile(data: Data(contentsOf: program.url))
-                    image = peFile.bestIcon()
-                } catch {
-                    print(error)
-                }
-            }
-        }
-    }
-}
-
-struct ShortcutView: View {
+struct PinnedProgramView: View {
     var bottle: Bottle
-    @State var shortcut: Shortcut
+    @State var pin: PinnedProgram
     @State var image: NSImage?
+    @State var showRenameSheet = false
+    @State var name: String = ""
     @Binding var loadStartMenu: Bool
 
     var body: some View {
@@ -298,29 +257,39 @@ struct ShortcutView: View {
                     .frame(width: 45, height: 45)
             }
             Spacer()
-            Text(shortcut.link
-                .deletingPathExtension()
-                .lastPathComponent + "\n")
+            Text(name + "\n")
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
         }
         .frame(width: 90, height: 90)
         .padding(10)
         .contextMenu {
-            Button("Delete Shortcut") {
-                bottle.settings.shortcuts.removeAll(where: { $0.link == shortcut.link })
+            Button("button.rename") {
+                showRenameSheet.toggle()
+            }
+            Button("pin.unpin") {
+                bottle.settings.pins.removeAll(where: { $0.url == pin.url })
+                for program in bottle.programs where program.url == pin.url {
+                    program.pinned = false
+                }
                 loadStartMenu.toggle()
             }
         }
+        .sheet(isPresented: $showRenameSheet) {
+            PinRenameView(name: $name)
+        }
         .onAppear {
-            let program = Program(name: shortcut.name,
-                                  url: shortcut.link,
+            let program = Program(name: pin.name,
+                                  url: pin.url,
                                   bottle: bottle)
-            do {
-                let peFile = try PEFile(data: Data(contentsOf: program.url))
+            if let peFile = program.peFile {
                 image = peFile.bestIcon()
-            } catch {
-                print(error)
+            }
+            name = pin.name
+        }
+        .onChange(of: name) {
+            if let index = bottle.settings.pins.firstIndex(where: { $0.url == pin.url }) {
+                bottle.settings.pins[index].name = name
             }
         }
     }
