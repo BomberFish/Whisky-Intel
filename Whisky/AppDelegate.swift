@@ -62,12 +62,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
-    
+
     private var aboutBoxWindowController: NSWindowController?
 
         func showAboutPanel() {
             if aboutBoxWindowController == nil {
-                let styleMask: NSWindow.StyleMask = [.closable,/* .resizable,*/ .titled]
+                let styleMask: NSWindow.StyleMask = [.closable, .titled]
                 let window = NSWindow()
                 window.styleMask = styleMask
                 window.title = "About"

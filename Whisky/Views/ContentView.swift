@@ -159,7 +159,7 @@ struct BottleListEntry: View {
     @Binding var selected: URL?
 
     var body: some View {
-        Label(name, systemImage: "wineglass")            
+        Label(name, systemImage: "wineglass")     
         .onAppear {
                 name = bottle.settings.name
             }

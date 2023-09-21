@@ -139,7 +139,7 @@ public class BottleSettings {
         }
     }
 
-    var dxvkAsync: Bool {
+    public var dxvkAsync: Bool {
         get {
             return settings.dxvkConfig.dxvkAsync
         } set {
@@ -234,7 +234,7 @@ public class BottleSettings {
                 break
             }
         }
-      
+
         if dxvkAsync {
             wineEnv.updateValue("1", forKey: "DXVK_ASYNC")
         }

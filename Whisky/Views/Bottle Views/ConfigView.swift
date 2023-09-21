@@ -100,11 +100,11 @@ struct ConfigView: View {
                         }
                     }
                 }
-                Section(content: {
+                Section("config.title.dxvk", isExpanded: $dxvkSectionExpanded) {
                     Toggle(isOn: $bottle.settings.dxvk) {
                         Text("config.dxvk")
                     }
-                    Toggle(isOn: $bottle.settings.dxvk) {
+                    Toggle(isOn: $bottle.settings.dxvkAsync) {
                         Text("config.dxvk.async")
                     }
                     .disabled(!bottle.settings.dxvk)
@@ -115,10 +115,13 @@ struct ConfigView: View {
                         Text("config.dxvkHud.off").tag(DXVKHUD.off)
                     }
                     .disabled(!bottle.settings.dxvk)
-                }, header: {Text("config.title.dxvk")}, footer: {
+                }
+
+                Section { } footer: {
                     Label("config.dxvk.info", systemImage: "info.circle")
                         .foregroundColor(Color(NSColor.secondaryLabelColor))
-                }, isExpanded: $dxvkSectionExpanded)
+                }
+
                 Section("config.title.metal") {
                     Toggle(isOn: $bottle.settings.metalHud) {
                         Text("config.metalHud")
