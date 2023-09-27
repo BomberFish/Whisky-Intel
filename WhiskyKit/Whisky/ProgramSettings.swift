@@ -2,13 +2,24 @@
 //  ProgramSettings.swift
 //  WhiskyKit
 //
-//  Created by Isaac Marovitz on 06/04/2023.
+//  This file is part of Whisky.
+//
+//  Whisky is free software: you can redistribute it and/or modify it under the terms
+//  of the GNU General Public License as published by the Free Software Foundation,
+//  either version 3 of the License, or (at your option) any later version.
+//
+//  Whisky is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+//  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+//  See the GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License along with Whisky.
+//  If not, see https://www.gnu.org/licenses/.
 //
 
 import Foundation
 
-enum Locales: String, Codable {
-    case none = ""
+public enum Locales: String, Codable, CaseIterable {
+    case auto = ""
     case german = "de_DE.UTF-8"
     case english = "en_US"
     case spanish = "es_ES.UTF-8"
@@ -21,9 +32,42 @@ enum Locales: String, Codable {
     case thai = "th_TH.UTF-8"
     case chineseSimplified = "zh_CN.UTF-8"
     case chineseTraditional = "zh_TW.UTF-8"
+
+    // swiftlint:disable:next cyclomatic_complexity
+    public func pretty() -> String {
+        switch self {
+        case .auto:
+            return String(localized: "locale.auto")
+        case .german:
+            return "Deutsch"
+        case .english:
+            return "English"
+        case .spanish:
+            return "Español"
+        case .french:
+            return "Français"
+        case .italian:
+            return "Italiano"
+        case .japanese:
+            return "日本語"
+        case .korean:
+            return "한국어"
+        case .russian:
+            return "Русский"
+        case .ukranian:
+            return "Українська"
+        case .thai:
+            return "ไทย"
+        case .chineseSimplified:
+            return "简体中文"
+        case .chineseTraditional:
+            return "繁體中文"
+        }
+    }
 }
 
 public struct ProgramSettingsData: Codable {
+    var locale: Locales = .auto
     var environment: [String: String] = [:]
     var arguments: String = ""
 }
@@ -32,6 +76,15 @@ public class ProgramSettings {
     public var settings: ProgramSettingsData {
         didSet {
             encode()
+        }
+    }
+
+    public var locale: Locales {
+        get {
+            return settings.locale
+        }
+        set {
+            settings.locale = newValue
         }
     }
 

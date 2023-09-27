@@ -1,10 +1,5 @@
-"tab.config" = "Konfiguracja";
-"tab.programs" = "Programy";
-"tab.info" = "Informacje";
-
-"tab.navTitle.config" = "Konfiguracja %@";
-"tab.navTitle.programs" = "%@ Programy";
-"tab.navTitle.info" = "%@ Informacje";
+"tab.config" = "Konfiguracja butelki";
+"tab.programs" = "Zainstalowane programy";
 
 "main.createFirst" = "Stwórz swoją pierwszą butelkę, aby rozpocząć";
 
@@ -13,9 +8,9 @@
 "button.createShortcut" = "Utwórz skrót";
 "button.run" = "Uruchom...";
 "button.ok" = "OK";
-"button.renameBottle" = "Zmień nazwę";
-"button.moveBottle" = "Przenieś";
-"button.exportBottle" = "Eksportuj jako archiwum";
+"button.rename" = "Zmień nazwę...";
+"button.moveBottle" = "Przenieś...";
+"button.exportBottle" = "Eksportuj jako archiwum...";
 "button.removeAlert" = "Usuń...";
 "button.createBottle" = "Utwórz butelkę";
 "button.removeAlert.msg" = "Usunąć %@?";
@@ -24,6 +19,9 @@
 "button.removeAlert.delete" = "Usuń";
 "button.removeAlert.cancel" = "Anuluj";
 
+"pin.unpin" = "Odepnij program";
+
+"config.title.wine" = "Wine";
 "config.winVersion" = "Wersja Windows";
 "config.buildVersion" = "Obecna wersja: ";
 "config.title.metal" = "Metal";
@@ -52,20 +50,13 @@
 "configDpi.previewText" = "Szybki brązowy lis przeskorzył przez leniwego psa.";
 "configDpi.dpi" = "DPI";
 
-"program.title" = "Zainstalowane programy";
+"program.title" = "Wszystkie programy";
+"program.blocklist" = "Czarna lista";
 "program.env" = "Zmienne środowiskowe";
 "program.args" = "Parametry";
 "program.config" = "Konfiguracja";
-
-"info.title" = "Informacje";
-"info.path" = "Ścieżka:";
-"info.path.copy" = "Skopiuj ścieżkę";
-"info.wine" = "Wersja Wine:";
-"info.win" = "Wersja systemu Windows:";
-"info.gptk" = "Wersja GPTK";
-
-"gptkalert.init" = "Przeciągnij i upuść plik Game Porting Toolkit.dmg";
-"gptkalert.message" = "GPTK napotkał błąd!";
+"program.add.blocklist" = "Dodaj do czarnej listy";
+"program.remove.blocklist" = "Usuń z czarnej listy";
 
 "alert.message" = "Nie udało się otworzyć programu!";
 "alert.info" = "Nie można otworzyć";
@@ -78,7 +69,8 @@
 "create.cancel" = "Anuluj";
 "create.create" = "Utwórz";
 
-"rename.title" = "Zmień nazwę butelki";
+"rename.bottle.title" = "Zmień nazwę butelki";
+"rename.pin.title" = "Zmień nazwę przypięcia";
 "rename.name" = "Nowa nazwa:";
 "rename.rename" = "Zmień nazwę";
 
@@ -130,3 +122,6 @@
 
 "run.title" = "Uruchom \"%@\"";
 "run.bottle" = "Butelka:";
+
+"locale.title" = "Ustawienie regionalne";
+"locale.auto" = "Automatyczne";

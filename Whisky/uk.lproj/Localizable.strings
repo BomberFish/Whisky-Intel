@@ -1,10 +1,5 @@
-"tab.config" = "Налаштування";
-"tab.programs" = "Програми";
-"tab.info" = "Інформація";
-
-"tab.navTitle.config" = "Параметри %@";
-"tab.navTitle.programs" = "%@ - програми";
-"tab.navTitle.info" = "%@ - інформація";
+"tab.config" = "Налаштування пляшки";
+"tab.programs" = "Встановлені програми";
 
 "main.createFirst" = "Створіть свою першу пляшку, щоб почати";
 
@@ -13,9 +8,9 @@
 "button.createShortcut" = "Створити ярлик";
 "button.run" = "Запустити...";
 "button.ok" = "Гаразд";
-"button.renameBottle" = "Перейменувати";
-"button.moveBottle" = "Перемістити";
-"button.exportBottle" = "Експортувати як архів";
+"button.rename" = "Перейменувати...";
+"button.moveBottle" = "Перемістити...";
+"button.exportBottle" = "Експортувати як архів...";
 "button.removeAlert" = "Видалити...";
 "button.createBottle" = "Створити пляшку";
 "button.removeAlert.msg" = "Видалити %@?";
@@ -24,6 +19,9 @@
 "button.removeAlert.delete" = "Видалити";
 "button.removeAlert.cancel" = "Скасувати";
 
+"pin.unpin" = "Відкріпити програму";
+
+"config.title.wine" = "Wine";
 "config.winVersion" = "Версія Windows";
 "config.buildVersion" = "Версія складання";
 "config.title.metal" = "Metal";
@@ -52,20 +50,13 @@
 "configDpi.previewText" = "Жебракують філософи при ґанку церкви в Гадячі, ще й шатро їхнє п’яне знаємо.";
 "configDpi.dpi" = "DPI";
 
-"program.title" = "Встановлені програми";
+"program.title" = "Всі програми";
+"program.blocklist" = "Чорний список";
 "program.env" = "Змінні середовища";
 "program.args" = "Аргументи";
 "program.config" = "Налаштування";
-
-"info.title" = "Інформація";
-"info.path" = "Шлях";
-"info.path.copy" = "Скопіювати шлях";
-"info.wine" = "Версія Wine";
-"info.win" = "Версія Windows";
-"info.gptk" = "Версія GPTK";
-
-"gptkalert.init" = "Перетягніть сюди DMG образ Game Porting Toolkit";
-"gptkalert.message" = "GPTK зіткнувся з помилкою!";
+"program.add.blocklist" = "Додати до чорного списку";
+"program.remove.blocklist" = "Видалити з чорного списку";
 
 "alert.message" = "Не вдалося відкрити програму!";
 "alert.info" = "Не вдалося відкрити";
@@ -78,7 +69,8 @@
 "create.cancel" = "Скасувати";
 "create.create" = "Створити";
 
-"rename.title" = "Перейменувати пляшку";
+"rename.bottle.title" = "Перейменувати пляшку";
+"rename.pin.title" = "Перейменувати прикріплене";
 "rename.name" = "Нова назва:";
 "rename.rename" = "Перейменувати";
 
@@ -130,3 +122,6 @@
 
 "run.title" = "Запустити \"%@\"";
 "run.bottle" = "Пляшка:";
+
+"locale.title" = "Locale";
+"locale.auto" = "Automatic";

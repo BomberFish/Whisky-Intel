@@ -1,10 +1,5 @@
-"tab.config" = "Configuração";
-"tab.programs" = "Programas";
-"tab.info" = "Informações";
-
-"tab.navTitle.config" = "%@ Configuração";
-"tab.navTitle.programs" = "%@ Programas";
-"tab.navTitle.info" = "%@ Informações";
+"tab.config" = "Bottle Configuration";
+"tab.programs" = "Installed Programs";
 
 "main.createFirst" = "Crie a sua primeira bottle para começar";
 
@@ -13,9 +8,9 @@
 "button.createShortcut" = "Create Shortcut";
 "button.run" = "Executar...";
 "button.ok" = "OK";
-"button.renameBottle" = "Alterar nome";
-"button.moveBottle" = "Mover";
-"button.exportBottle" = "Exportar como Arquivo";
+"button.rename" = "Rename...";
+"button.moveBottle" = "Move...";
+"button.exportBottle" = "Export as Archive...";
 "button.removeAlert" = "Remove...";
 "button.createBottle" = "Criar uma Bottle";
 "button.removeAlert.msg" = "Remove %@?";
@@ -24,6 +19,9 @@
 "button.removeAlert.delete" = "Remove";
 "button.removeAlert.cancel" = "Cancel";
 
+"pin.unpin" = "Unpin Program";
+
+"config.title.wine" = "Wine";
 "config.winVersion" = "Versão do Windows";
 "config.buildVersion" = "Versão da compilação";
 "config.title.metal" = "Metal";
@@ -52,20 +50,13 @@
 "configDpi.previewText" = "The quick brown fox jumps over the lazy dog.";
 "configDpi.dpi" = "DPI";
 
-"program.title" = "Programas Instalados";
+"program.title" = "All Programs";
+"program.blocklist" = "Blocklist";
 "program.env" = "Variáveis de Ambiente";
 "program.args" = "Argumentos";
 "program.config" = "Configuração";
-
-"info.title" = "Informações";
-"info.path" = "Caminho";
-"info.path.copy" = "Copiar Caminho";
-"info.wine" = "Versão do Wine";
-"info.win" = "Versão do Windows";
-"info.gptk" = "Versão do GPTK";
-
-"gptkalert.init" = "Arraste e solte o arquivo DMG do Game Porting Toolkit";
-"gptkalert.message" = "O GPTK encontrou um erro!";
+"program.add.blocklist" = "Add to Blocklist";
+"program.remove.blocklist" = "Remove from Blocklist";
 
 "alert.message" = "Falha ao abrir o programa!";
 "alert.info" = "Falha ao abrir";
@@ -78,7 +69,8 @@
 "create.cancel" = "Cancelar";
 "create.create" = "Criar";
 
-"rename.title" = "Alterar nome da Bottle";
+"rename.bottle.title" = "Rename bottle";
+"rename.pin.title" = "Rename pin";
 "rename.name" = "Novo nome:";
 "rename.rename" = "Alterar nome";
 
@@ -130,3 +122,6 @@
 
 "run.title" = "Run \"%@\"";
 "run.bottle" = "Bottle:";
+
+"locale.title" = "Locale";
+"locale.auto" = "Automatic";

@@ -1,10 +1,5 @@
-"tab.config" = "Konfiguraatio";
-"tab.programs" = "Ohjelmat";
-"tab.info" = "Tiedot";
-
-"tab.navTitle.config" = "%@ Konfiguraatio";
-"tab.navTitle.programs" = "%@ Ohjelmat";
-"tab.navTitle.info" = "%@ Tiedot";
+"tab.config" = "Pullon konfiguraatio";
+"tab.programs" = "Asennetut ohjelmat";
 
 "main.createFirst" = "Luo ensimmäinen pullo, jotta voit aloittaa";
 
@@ -13,9 +8,9 @@
 "button.createShortcut" = "Luo pikakomento";
 "button.run" = "Käynnistä...";
 "button.ok" = "OK";
-"button.renameBottle" = "Nimeä uudelleen";
-"button.moveBottle" = "Siirrä";
-"button.exportBottle" = "Vie arkistona";
+"button.rename" = "Nimeä uudelleen...";
+"button.moveBottle" = "Siirrä...";
+"button.exportBottle" = "Vie arkistona...";
 "button.removeAlert" = "Poista...";
 "button.createBottle" = "Luo pullo";
 "button.removeAlert.msg" = "Poista %@?";
@@ -24,6 +19,9 @@
 "button.removeAlert.delete" = "Poista";
 "button.removeAlert.cancel" = "Peru";
 
+"pin.unpin" = "Poista ohjelman kiinnitys";
+
+"config.title.wine" = "Wine";
 "config.winVersion" = "Windows versio";
 "config.buildVersion" = "Ohjelmistoversio";
 "config.title.metal" = "Metal";
@@ -52,20 +50,13 @@
 "configDpi.previewText" = "Albert osti fagotin ja töräytti puhkuvan melodian.";
 "configDpi.dpi" = "DPI";
 
-"program.title" = "Asennetut ohjelmat";
+"program.title" = "Kaikki ohjelmat";
+"program.blocklist" = "Estolista";
 "program.env" = "Ympäristön muuttujat";
 "program.args" = "Argumentit";
 "program.config" = "Konfiguraatio";
-
-"info.title" = "Tiedot";
-"info.path" = "Polku";
-"info.path.copy" = "Kopio polku";
-"info.wine" = "Wine versio";
-"info.win" = "Windows versio";
-"info.gptk" = "GPTK versio";
-
-"gptkalert.init" = "Vedä ja pudota Game Porting Toolkit DMG";
-"gptkalert.message" = "GPTK ajautui virheeseen!";
+"program.add.blocklist" = "Lisää estolistaan";
+"program.remove.blocklist" = "Poista estolistalta";
 
 "alert.message" = "Ohjelman käynnistäminen epäonnistui!";
 "alert.info" = "Avaaminen epäonnistui";
@@ -78,7 +69,8 @@
 "create.cancel" = "Peru";
 "create.create" = "Luo";
 
-"rename.title" = "Uudelleen nimeä pullo";
+"rename.bottle.title" = "Uudelleennimeä pullo";
+"rename.pin.title" = "Uudelleennimeä kiinnike";
 "rename.name" = "Uusi nimi:";
 "rename.rename" = "Uudelleen nimeä";
 
@@ -130,3 +122,6 @@
 
 "run.title" = "Suorita \"%@\"";
 "run.bottle" = "Pullo:";
+
+"locale.title" = "Locale";
+"locale.auto" = "Automatic";

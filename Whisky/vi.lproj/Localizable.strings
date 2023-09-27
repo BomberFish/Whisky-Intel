@@ -1,10 +1,5 @@
-"tab.config" = "Cấu hình";
-"tab.programs" = "Chương trình";
-"tab.info" = "Thông thin";
-
-"tab.navTitle.config" = "Cấu hình %@";
-"tab.navTitle.programs" = "Chương trình trong %@";
-"tab.navTitle.info" = "Thông tin về %@";
+"tab.config" = "Bottle Configuration";
+"tab.programs" = "Installed Programs";
 
 "main.createFirst" = "Tạo bottle đầu tiên để bắt đầu";
 
@@ -13,9 +8,9 @@
 "button.createShortcut" = "Create Shortcut";
 "button.run" = "Chạy...";
 "button.ok" = "OK";
-"button.renameBottle" = "Đổi tên";
-"button.moveBottle" = "Di chuyển bottle";
-"button.exportBottle" = "Lưu bottle ra file";
+"button.rename" = "Rename...";
+"button.moveBottle" = "Move...";
+"button.exportBottle" = "Export as Archive...";
 "button.removeAlert" = "Remove...";
 "button.createBottle" = "Tạo Bottle";
 "button.removeAlert.msg" = "Remove %@?";
@@ -24,6 +19,9 @@
 "button.removeAlert.delete" = "Remove";
 "button.removeAlert.cancel" = "Cancel";
 
+"pin.unpin" = "Unpin Program";
+
+"config.title.wine" = "Wine";
 "config.winVersion" = "Phiên bản Windows";
 "config.buildVersion" = "Bản dựng";
 "config.title.metal" = "Metal";
@@ -52,20 +50,13 @@
 "configDpi.previewText" = "The quick brown fox jumps over the lazy dog.";
 "configDpi.dpi" = "DPI";
 
-"program.title" = "Chương trình đã cài";
+"program.title" = "All Programs";
+"program.blocklist" = "Blocklist";
 "program.env" = "Biến môi trường";
 "program.args" = "Thông số";
 "program.config" = "Cấu hình";
-
-"info.title" = "Thông tin";
-"info.path" = "Đường dẫn";
-"info.path.copy" = "Chép đường dẫn";
-"info.wine" = "Phiên bản Wine";
-"info.win" = "Phiên bản Windows";
-"info.gptk" = "Phiên bản GPTK";
-
-"gptkalert.init" = "Kéo thả file DMG của Game Porting Toolkit";
-"gptkalert.message" = "Lỗi file GPTK!";
+"program.add.blocklist" = "Add to Blocklist";
+"program.remove.blocklist" = "Remove from Blocklist";
 
 "alert.message" = "Không thể mở chương trình này!";
 "alert.info" = "Không thể mỏ";
@@ -78,7 +69,8 @@
 "create.cancel" = "Huỷ";
 "create.create" = "Tạo";
 
-"rename.title" = "Đổi tên bottle";
+"rename.bottle.title" = "Rename bottle";
+"rename.pin.title" = "Rename pin";
 "rename.name" = "Tên mới:";
 "rename.rename" = "Đổi tên";
 
@@ -130,3 +122,6 @@
 
 "run.title" = "Run \"%@\"";
 "run.bottle" = "Bottle:";
+
+"locale.title" = "Locale";
+"locale.auto" = "Automatic";

@@ -1,10 +1,5 @@
-"tab.config" = "Configuratie";
-"tab.programs" = "Programma";
-"tab.info" = "Informatie";
-
-"tab.navTitle.config" = "%@ Configuratie";
-"tab.navTitle.programs" = "%@ Programma";
-"tab.navTitle.info" = "%@ Informatie";
+"tab.config" = "Bottle Configuration";
+"tab.programs" = "Installed Programs";
 
 "main.createFirst" = "Maak je eerste fles om te beginnen";
 
@@ -13,9 +8,9 @@
 "button.createShortcut" = "Create Shortcut";
 "button.run" = "Starten...";
 "button.ok" = "OK";
-"button.renameBottle" = "Hernoemen";
-"button.moveBottle" = "Verplaats";
-"button.exportBottle" = "Exporteer als archief";
+"button.rename" = "Rename...";
+"button.moveBottle" = "Move...";
+"button.exportBottle" = "Export as Archive...";
 "button.removeAlert" = "Remove...";
 "button.createBottle" = "Fles maken";
 "button.removeAlert.msg" = "Remove %@?";
@@ -24,6 +19,9 @@
 "button.removeAlert.delete" = "Remove";
 "button.removeAlert.cancel" = "Cancel";
 
+"pin.unpin" = "Unpin Program";
+
+"config.title.wine" = "Wine";
 "config.winVersion" = "Windows-versie";
 "config.buildVersion" = "Build-versie";
 "config.title.metal" = "Metal";
@@ -52,20 +50,13 @@
 "configDpi.previewText" = "Pa’s wijze lynx bezag vroom het fikse aquaduct.";
 "configDpi.dpi" = "DPI";
 
-"program.title" = "Geïnstalleerde programma's";
+"program.title" = "All Programs";
+"program.blocklist" = "Blocklist";
 "program.env" = "Omgevingsvariabelen";
 "program.args" = "Argumenten";
 "program.config" = "Configuratie";
-
-"info.title" = "Informatie";
-"info.path" = "Pad";
-"info.path.copy" = "Pad kopiëren";
-"info.wine" = "Wine Versie";
-"info.win" = "Windows Versie";
-"info.gptk" = "GPTK versie";
-
-"gptkalert.init" = "Sleep de Game Porting Toolkit DMG";
-"gptkalert.message" = "Er is een fout opgetreden bij de GPTK!";
+"program.add.blocklist" = "Add to Blocklist";
+"program.remove.blocklist" = "Remove from Blocklist";
 
 "alert.message" = "Kan het programma niet openen!";
 "alert.info" = "Niet geslaagd te openen";
@@ -78,7 +69,8 @@
 "create.cancel" = "Annuleren";
 "create.create" = "Aanmaken";
 
-"rename.title" = "Hernoem fles";
+"rename.bottle.title" = "Rename bottle";
+"rename.pin.title" = "Rename pin";
 "rename.name" = "Nieuwe naam:";
 "rename.rename" = "Hernoem";
 
@@ -130,3 +122,6 @@
 
 "run.title" = "Run \"%@\"";
 "run.bottle" = "Bottle:";
+
+"locale.title" = "Locale";
+"locale.auto" = "Automatic";

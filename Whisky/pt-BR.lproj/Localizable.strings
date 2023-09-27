@@ -1,29 +1,27 @@
-"tab.config" = "Configuração";
-"tab.programs" = "Programas";
-"tab.info" = "Informações";
-
-"tab.navTitle.config" = "%@ Configuração";
-"tab.navTitle.programs" = "%@ Programas";
-"tab.navTitle.info" = "%@ Informações";
+"tab.config" = "Configuração da Bottle";
+"tab.programs" = "Programas Instalados";
 
 "main.createFirst" = "Crie sua primeira Bottle para começar";
 
-"button.cDrive" = "Open C: Drive";
+"button.cDrive" = "Abrir disco C:";
 "button.showInFinder" = "Abrir no Finder";
 "button.createShortcut" = "Criar atalho";
 "button.run" = "Executar...";
 "button.ok" = "OK";
-"button.renameBottle" = "Renomear";
-"button.moveBottle" = "Mover";
-"button.exportBottle" = "Exportar como arquivo";
+"button.rename" = "Renomear...";
+"button.moveBottle" = "Mover...";
+"button.exportBottle" = "Exportar como arquivo...";
 "button.removeAlert" = "Remover...";
 "button.createBottle" = "Criar uma Bottle";
 "button.removeAlert.msg" = "Remover %@?";
 "button.removeAlert.info" = "Tem a certeza de que pretende remover esta garrafa? Esta ação é permanente.";
-"button.removeAlert.checkbox" = "Eliminar ficheiros do disco";
+"button.removeAlert.checkbox" = "Apagar arquivos do disco";
 "button.removeAlert.delete" = "Remover";
 "button.removeAlert.cancel" = "Cancelar";
 
+"pin.unpin" = "Unpin Program";
+
+"config.title.wine" = "Wine";
 "config.winVersion" = "Versão do Windows";
 "config.buildVersion" = "Versão da Compilação";
 "config.title.metal" = "Metal";
@@ -52,20 +50,13 @@
 "configDpi.previewText" = "A rápida raposa marrom pula sobre o cachorro preguiçoso.";
 "configDpi.dpi" = "DPI";
 
-"program.title" = "Programas Instalados";
+"program.title" = "Todos os Programas";
+"program.blocklist" = "Blocklist";
 "program.env" = "Variáveis de Ambiente";
 "program.args" = "Argumentos";
 "program.config" = "Configuração";
-
-"info.title" = "Informações";
-"info.path" = "Caminho";
-"info.path.copy" = "Copiar Caminho";
-"info.wine" = "Versão do Wine";
-"info.win" = "Versão do Windows";
-"info.gptk" = "Versão do GPTK";
-
-"gptkalert.init" = "Arraste e solte o arquivo DMG do Game Porting Toolkit";
-"gptkalert.message" = "O GPTK encontrou um erro!";
+"program.add.blocklist" = "Add to Blocklist";
+"program.remove.blocklist" = "Remove from Blocklist";
 
 "alert.message" = "Falha ao abrir o programa!";
 "alert.info" = "Falha ao abrir";
@@ -78,7 +69,8 @@
 "create.cancel" = "Cancelar";
 "create.create" = "Criar";
 
-"rename.title" = "Renomear Bottle";
+"rename.bottle.title" = "Rename bottle";
+"rename.pin.title" = "Rename pin";
 "rename.name" = "Novo nome:";
 "rename.rename" = "Renomear";
 
@@ -130,3 +122,6 @@
 
 "run.title" = "Executar \"%@\"";
 "run.bottle" = "Bottle:";
+
+"locale.title" = "Locale";
+"locale.auto" = "Automatic";

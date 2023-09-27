@@ -2,7 +2,18 @@
 //  Bottle.swift
 //  Whisky
 //
-//  Created by Isaac Marovitz on 23/03/2023.
+//  This file is part of Whisky.
+//
+//  Whisky is free software: you can redistribute it and/or modify it under the terms
+//  of the GNU General Public License as published by the Free Software Foundation,
+//  either version 3 of the License, or (at your option) any later version.
+//
+//  Whisky is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+//  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+//  See the GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License along with Whisky.
+//  If not, see https://www.gnu.org/licenses/.
 //
 
 import Foundation
@@ -99,7 +110,10 @@ extension Bottle {
             }
         }
 
-        programs.sort(by: { $0.name.lowercased() < $1.name.lowercased() })
+        // Apply blocklist
+        programs = programs.filter { !settings.blocklist.contains($0.url) }
+
+        programs.sort { $0.name.lowercased() < $1.name.lowercased() }
         return programs
     }
 
@@ -108,6 +122,17 @@ extension Bottle {
         do {
             if let bottle = BottleVM.shared.bottles.first(where: { $0.url == url }) {
                 bottle.inFlight = true
+                for index in 0..<bottle.settings.pins.count {
+                    let pin = bottle.settings.pins[index]
+                    bottle.settings.pins[index].url = pin.url.updateParentBottle(old: url,
+                                                                                 new: destination)
+                }
+
+                for index in 0..<bottle.settings.blocklist.count {
+                    let blockedUrl = bottle.settings.blocklist[index]
+                    bottle.settings.blocklist[index] = blockedUrl.updateParentBottle(old: url,
+                                                                                     new: destination)
+                }
             }
             try FileManager.default.moveItem(at: url, to: destination)
             if let path = BottleVM.shared.bottlesList.paths.firstIndex(of: url) {

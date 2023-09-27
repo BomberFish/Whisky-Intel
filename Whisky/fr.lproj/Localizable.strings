@@ -1,10 +1,5 @@
-"tab.config" = "Configuration";
-"tab.programs" = "Programmes";
-"tab.info" = "Info";
-
-"tab.navTitle.config" = "Configuration de %@";
-"tab.navTitle.programs" = "Programmes de %@";
-"tab.navTitle.info" = "Info sur %@";
+"tab.config" = "Bottle Configuration";
+"tab.programs" = "Installed Programs";
 
 "main.createFirst" = "Créez votre première bouteille pour commencer";
 
@@ -13,9 +8,9 @@
 "button.createShortcut" = "Create Shortcut";
 "button.run" = "Exécuter...";
 "button.ok" = "OK";
-"button.renameBottle" = "Renommer";
-"button.moveBottle" = "Transférer";
-"button.exportBottle" = "Exporter Archive";
+"button.rename" = "Rename...";
+"button.moveBottle" = "Move...";
+"button.exportBottle" = "Export as Archive...";
 "button.removeAlert" = "Supprimer...";
 "button.createBottle" = "Créer une bouteille";
 "button.removeAlert.msg" = "Supprimer %@?";
@@ -24,6 +19,9 @@
 "button.removeAlert.delete" = "Supprimer";
 "button.removeAlert.cancel" = "Annuler";
 
+"pin.unpin" = "Unpin Program";
+
+"config.title.wine" = "Wine";
 "config.winVersion" = "Version de Windows";
 "config.buildVersion" = "Version de Build";
 "config.title.metal" = "Metal";
@@ -52,20 +50,13 @@
 "configDpi.previewText" = "Voix ambiguë d'un cœur qui, au zéphyr, préfère les jattes de kiwis.";
 "configDpi.dpi" = "PPP";
 
-"program.title" = "Programmes Installés";
+"program.title" = "All Programs";
+"program.blocklist" = "Blocklist";
 "program.env" = "Variables d'environnement";
 "program.args" = "Paramètres";
 "program.config" = "Config";
-
-"info.title" = "Info";
-"info.path" = "Chemin";
-"info.path.copy" = "Copier le chemin";
-"info.wine" = "Version de Wine";
-"info.win" = "Version de Windows";
-"info.gptk" = "Version du GPTK";
-
-"gptkalert.init" = "Glissez et déposez le fichier DMG Game Porting Toolkit";
-"gptkalert.message" = "GPTK a rencontré une erreur !";
+"program.add.blocklist" = "Add to Blocklist";
+"program.remove.blocklist" = "Remove from Blocklist";
 
 "alert.message" = "Impossible d'ouvrir le programme !";
 "alert.info" = "Échec de l'ouverture";
@@ -78,7 +69,8 @@
 "create.cancel" = "Annuler";
 "create.create" = "Créer";
 
-"rename.title" = "Renommer la bouteille";
+"rename.bottle.title" = "Rename bottle";
+"rename.pin.title" = "Rename pin";
 "rename.name" = "Nouveau nom :";
 "rename.rename" = "Renommer";
 
@@ -130,3 +122,6 @@
 
 "run.title" = "Run \"%@\"";
 "run.bottle" = "Bottle:";
+
+"locale.title" = "Locale";
+"locale.auto" = "Automatic";

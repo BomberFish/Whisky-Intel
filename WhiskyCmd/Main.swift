@@ -2,7 +2,18 @@
 //  Main.swift
 //  WhiskyCmd
 //
-//  Created by Isaac Marovitz on 26/08/2023.
+//  This file is part of Whisky.
+//
+//  Whisky is free software: you can redistribute it and/or modify it under the terms
+//  of the GNU General Public License as published by the Free Software Foundation,
+//  either version 3 of the License, or (at your option) any later version.
+//
+//  Whisky is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+//  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+//  See the GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License along with Whisky.
+//  If not, see https://www.gnu.org/licenses/.
 //
 
 import Foundation
@@ -10,6 +21,7 @@ import ArgumentParser
 import WhiskyKit
 import SwiftyTextTable
 import Progress
+import SemanticVersion
 
 @main
 struct Whisky: ParsableCommand {
@@ -18,11 +30,11 @@ struct Whisky: ParsableCommand {
         subcommands: [List.self,
                       Create.self,
                       Add.self,
-                      Export.self,
+//                      Export.self,
                       Delete.self,
-                      Remove.self,
-                      Install.self,
-                      Uninstall.self])
+                      Remove.self
+                      /*Install.self,
+                      Uninstall.self*/])
 }
 
 extension Whisky {
@@ -52,10 +64,27 @@ extension Whisky {
         static var configuration = CommandConfiguration(abstract: "Create a new bottle.")
 
         @Argument var name: String
-        @Argument var path: String?
 
         mutating func run() throws {
-            print("Create a bottle")
+            let bottleURL = BottleData.defaultBottleDir.appending(path: UUID().uuidString)
+
+            do {
+                try FileManager.default.createDirectory(atPath: bottleURL.path(percentEncoded: false),
+                                                        withIntermediateDirectories: true)
+                let bottle = Bottle(bottleUrl: bottleURL, inFlight: true)
+                // Should allow customisation
+                bottle.settings.windowsVersion = .win10
+                bottle.settings.name = name
+//                try await Wine.changeWinVersion(bottle: bottle, win: winVersion)
+//                let wineVer = try await Wine.wineVersion()
+                bottle.settings.wineVersion = SemanticVersion(0, 0, 0)
+
+                var bottlesList = BottleData()
+                bottlesList.paths.append(bottleURL)
+                print("Created new bottle \"\(name)\".")
+            } catch {
+                print(error)
+            }
         }
     }
 
@@ -78,12 +107,12 @@ extension Whisky {
         static var configuration = CommandConfiguration(abstract: "Export an existing bottle.")
 
         mutating func run() throws {
-            print("Create a bottle")
+//            print("Create a bottle")
         }
     }
 
     struct Delete: ParsableCommand {
-        static var configuration = CommandConfiguration(abstract: "Delete a an existing bottle from disk.")
+        static var configuration = CommandConfiguration(abstract: "Delete an existing bottle from disk.")
 
         @Argument var name: String
 
@@ -133,29 +162,29 @@ extension Whisky {
         @Flag(name: [.long, .short], help: "Download & Install GPTK") var gptk = false
 
         mutating func run() throws {
-            if gptk {
-                let semaphore = DispatchSemaphore(value: 0)
-
-                Task {
-                    if let info = await GPTKDownloader.getLatestGPTKURL(),
-                       let url = info.directURL {
-                        print("Downloading GPTK from \(url)")
-                        var progress = ProgressBar(count: info.totalByteCount)
-                        let downloadTask = URLSession.shared.downloadTask(with: url) { url, _, _ in
-                            if let url = url {
-                                // tarLocation = url
-                            }
-                            semaphore.signal()
-                        }
-                        var observation = downloadTask.observe(\.countOfBytesReceived) { task, _ in
-                            progress.setValue(Int(task.countOfBytesReceived))
-                        }
-                        downloadTask.resume()
-                    }
-                }
-
-                semaphore.wait()
-            }
+//            if gptk {
+//                let semaphore = DispatchSemaphore(value: 0)
+//
+//                Task {
+//                    if let info = await GPTKDownloader.getLatestGPTKURL(),
+//                       let url = info.directURL {
+//                        print("Downloading GPTK from \(url)")
+//                        var progress = ProgressBar(count: info.totalByteCount)
+//                        let downloadTask = URLSession.shared.downloadTask(with: url) { url, _, _ in
+//                            if let url = url {
+//                                // tarLocation = url
+//                            }
+//                            semaphore.signal()
+//                        }
+//                        var observation = downloadTask.observe(\.countOfBytesReceived) { task, _ in
+//                            progress.setValue(Int(task.countOfBytesReceived))
+//                        }
+//                        downloadTask.resume()
+//                    }
+//                }
+//
+//                semaphore.wait()
+//            }
         }
     }
 
@@ -166,10 +195,10 @@ extension Whisky {
         @Flag(name: [.long, .short], help: "Uninstall GPTK") var gptk = false
 
         mutating func run() throws {
-            if gptk {
-                GPTKInstaller.uninstall()
-                print("GPTK uninstalled.")
-            }
+//            if gptk {
+//                GPTKInstaller.uninstall()
+//                print("GPTK uninstalled.")
+//            }
         }
     }
 }

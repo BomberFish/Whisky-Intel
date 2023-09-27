@@ -1,6 +1,5 @@
 "tab.config" = "Bottle Configuration";
 "tab.programs" = "Installed Programs";
-"tab.info" = "Info";
 
 "main.createFirst" = "Create your first bottle to get started";
 
@@ -53,19 +52,12 @@
 "configDpi.dpi" = "DPI";
 
 "program.title" = "All Programs";
+"program.blocklist" = "Blocklist";
 "program.env" = "Environment Variables";
 "program.args" = "Arguments";
 "program.config" = "Config";
-
-"info.title" = "Info";
-"info.path" = "Path";
-"info.path.copy" = "Copy Path";
-"info.wine" = "Wine Version";
-"info.win" = "Windows Version";
-"info.gptk" = "GPTK Version";
-
-"gptkalert.init" = "Drag and drop the Game Porting Toolkit DMG";
-"gptkalert.message" = "GPTK encountered an error!";
+"program.add.blocklist" = "Add to Blocklist";
+"program.remove.blocklist" = "Remove from Blocklist";
 
 "alert.message" = "Failed to open program!";
 "alert.info" = "Failed to open";
@@ -131,3 +123,6 @@
 
 "run.title" = "Run \"%@\"";
 "run.bottle" = "Bottle:";
+
+"locale.title" = "Locale";
+"locale.auto" = "Automatic";

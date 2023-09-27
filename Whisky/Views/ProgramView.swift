@@ -2,7 +2,18 @@
 //  ProgramView.swift
 //  Whisky
 //
-//  Created by Isaac Marovitz on 31/03/2023.
+//  This file is part of Whisky.
+//
+//  Whisky is free software: you can redistribute it and/or modify it under the terms
+//  of the GNU General Public License as published by the Free Software Foundation,
+//  either version 3 of the License, or (at your option) any later version.
+//
+//  Whisky is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+//  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+//  See the GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License along with Whisky.
+//  If not, see https://www.gnu.org/licenses/.
 //
 
 import SwiftUI
@@ -14,23 +25,17 @@ struct ProgramView: View {
     @State var image: NSImage?
     @State var environment: [String: String] = [:]
     @State var programLoading: Bool = false
+    @State var locale: Locales = .auto
 
     var body: some View {
         VStack {
             Form {
-                Section("info.title") {
-                    HStack {
-                        InfoItem(label: String(localized: "info.path"), value: program.url.prettyPath())
-                        .contextMenu {
-                            Button("info.path.copy") {
-                                let pasteboard = NSPasteboard.general
-                                pasteboard.clearContents()
-                                pasteboard.setString(program.url.path, forType: .string)
-                            }
+                Section("program.config") {
+                    Picker("locale.title", selection: $locale) {
+                        ForEach(Locales.allCases, id: \.self) {
+                            Text($0.pretty())
                         }
                     }
-                }
-                Section("program.config") {
                     VStack {
                         HStack {
                             Text("program.args")
@@ -112,9 +117,13 @@ struct ProgramView: View {
             }
 
             environment = program.settings.environment
+            locale = program.settings.locale
         }
         .onChange(of: environment) { _, newValue in
             program.settings.environment = newValue
+        }
+        .onChange(of: locale) { _, newValue in
+            program.settings.locale = newValue
         }
     }
 }

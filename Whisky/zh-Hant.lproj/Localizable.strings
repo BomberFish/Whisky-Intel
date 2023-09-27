@@ -1,10 +1,5 @@
-"tab.config" = "設定";
-"tab.programs" = "程式";
-"tab.info" = "資訊";
-
-"tab.navTitle.config" = "%@ 設定";
-"tab.navTitle.programs" = "%@ 上的程式";
-"tab.navTitle.info" = "%@ 的資訊";
+"tab.config" = "Bottle Configuration";
+"tab.programs" = "Installed Programs";
 
 "main.createFirst" = "建立你的第一個容器以開始";
 
@@ -13,9 +8,9 @@
 "button.createShortcut" = "Create Shortcut";
 "button.run" = "執行...";
 "button.ok" = "確定";
-"button.renameBottle" = "重新命名";
-"button.moveBottle" = "移動";
-"button.exportBottle" = "匯出為存檔";
+"button.rename" = "重新命名...";
+"button.moveBottle" = "移動...";
+"button.exportBottle" = "匯出為封存...";
 "button.removeAlert" = "Remove...";
 "button.createBottle" = "建立容器";
 "button.removeAlert.msg" = "Remove %@?";
@@ -24,6 +19,9 @@
 "button.removeAlert.delete" = "Remove";
 "button.removeAlert.cancel" = "Cancel";
 
+"pin.unpin" = "Unpin Program";
+
+"config.title.wine" = "Wine";
 "config.winVersion" = "Windows 版本";
 "config.buildVersion" = "（由洋甘菊翻譯提供翻譯）
 組建版本";
@@ -53,20 +51,13 @@
 "configDpi.previewText" = "敏捷的棕色狐狸跳過了懶狗。";
 "configDpi.dpi" = "DPI";
 
-"program.title" = "已安裝的程式";
+"program.title" = "All Programs";
+"program.blocklist" = "Blocklist";
 "program.env" = "環境變數";
 "program.args" = "命令列引數";
 "program.config" = "設定";
-
-"info.title" = "資訊";
-"info.path" = "路徑";
-"info.path.copy" = "複製路徑";
-"info.wine" = "Wine 版本";
-"info.win" = "Windows 版本";
-"info.gptk" = "GPTK版本";
-
-"gptkalert.init" = "將 Game Porting Toolkit 的 DMG 文件拖到這裡";
-"gptkalert.message" = "GPTK 遇到錯誤！";
+"program.add.blocklist" = "Add to Blocklist";
+"program.remove.blocklist" = "Remove from Blocklist";
 
 "alert.message" = "無法開啟程式！";
 "alert.info" = "開啟失敗";
@@ -79,7 +70,8 @@
 "create.cancel" = "取消";
 "create.create" = "建立";
 
-"rename.title" = "重新命名容器";
+"rename.bottle.title" = "重新命名容器";
+"rename.pin.title" = "重新命名 Pin";
 "rename.name" = "新名稱：";
 "rename.rename" = "重新命名";
 
@@ -131,3 +123,6 @@
 
 "run.title" = "執行「%@」";
 "run.bottle" = "容器：";
+
+"locale.title" = "Locale";
+"locale.auto" = "Automatic";
